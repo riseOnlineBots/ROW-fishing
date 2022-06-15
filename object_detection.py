@@ -40,6 +40,8 @@ class ObjectDetection:
 
     scheduler = None
 
+    DEBUG = False
+
     def __init__(self):
         self.current_state = State.IN_GAME
         self.lock = Lock()
@@ -91,7 +93,8 @@ class ObjectDetection:
         # print('Current attempt:', self.attempt)
 
         if self.attempt > 3:
-            print('The game is lagging heavily. Resetting the process...')
+            if self.DEBUG:
+                print('The game is lagging heavily. Resetting the process...')
 
             self.current_state = State.RESET
 
@@ -130,9 +133,13 @@ class ObjectDetection:
             elif self.current_state == State.SERVER:
                 sleep(2)
 
-                print('Server selection...')
+                if self.DEBUG:
+                    print('Server selection...')
 
+                # Aarvad.
                 py.moveTo(975, 359)
+                # Rise Tester.
+                # py.moveTo(975, 421)
 
                 locations_character = self.detect_object(self.character)
                 self.lock.acquire()
@@ -148,7 +155,8 @@ class ObjectDetection:
             elif self.current_state == State.CHARACTER:
                 sleep(5)
 
-                print('Character selection...')
+                if self.DEBUG:
+                    print('Character selection...')
 
                 locations_character = self.detect_object(self.character)
                 self.lock.acquire()
@@ -162,7 +170,8 @@ class ObjectDetection:
 
                 self.lock.release()
             elif self.current_state == State.LOADING:
-                print('Waiting for 10 seconds to load the game.')
+                if self.DEBUG:
+                    print('Waiting for 10 seconds to load the game.')
 
                 sleep(10)
 
