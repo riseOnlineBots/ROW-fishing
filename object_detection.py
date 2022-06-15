@@ -54,7 +54,6 @@ class ObjectDetection:
         self.character = cv.imread('character.jpg', self.image_flag_method)
         self.loading = cv.imread('loading.jpg', self.image_flag_method)
 
-
     def detect_object(self, detected_object, threshold=0.5):
         result = cv.matchTemplate(self.screenshot, detected_object, self.match_template_method)
         locations = np.where(result >= threshold)
@@ -149,12 +148,12 @@ class ObjectDetection:
             elif self.current_state == State.CHARACTER:
                 sleep(5)
 
-                # print('Character selection...')
+                print('Character selection...')
 
-                locations_loading = self.detect_object(self.loading)
+                locations_character = self.detect_object(self.character)
                 self.lock.acquire()
 
-                if not locations_loading:
+                if locations_character:
                     py.click(interval=5)
                     self.increase_attempt()
                 else:
@@ -163,7 +162,7 @@ class ObjectDetection:
 
                 self.lock.release()
             elif self.current_state == State.LOADING:
-                # print('Waiting for 10 seconds to load the game.')
+                print('Waiting for 10 seconds to load the game.')
 
                 sleep(10)
 
