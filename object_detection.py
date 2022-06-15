@@ -91,7 +91,7 @@ class ObjectDetection:
         self.attempt += 1
         # print('Current attempt:', self.attempt)
 
-        if self.attempt > 1:
+        if self.attempt > 3:
             print('The game is lagging heavily. Resetting the process...')
 
             self.current_state = State.RESET
@@ -155,7 +155,7 @@ class ObjectDetection:
                 self.lock.acquire()
 
                 if not locations_loading:
-                    # py.click(interval=5)
+                    py.click(interval=5)
                     self.increase_attempt()
                 else:
                     self.current_state = State.LOADING
