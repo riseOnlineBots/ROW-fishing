@@ -112,7 +112,7 @@ class ObjectDetection:
                     self.current_state = State.LOGIN
                     self.attempt = 0
                 else:
-                    py.click(interval=2)
+                    py.click(interval=10)
 
                 self.lock.release()
             elif self.current_state == State.LOGIN:

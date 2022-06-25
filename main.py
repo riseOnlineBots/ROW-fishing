@@ -40,9 +40,13 @@ while True:
         bot.update(window.screenshot)
 
         if not fishing_started:
-            win32api.SendMessage(hwnd, win32con.WM_KEYDOWN, 0x46 , 0)
+            win32api.SendMessage(hwnd, win32con.WM_KEYDOWN, 0x46, 0)
             sleep(0.5)
-            win32api.SendMessage(hwnd, win32con.WM_KEYUP, 0x46 , 0)
+            win32api.SendMessage(hwnd, win32con.WM_KEYUP, 0x46, 0)
+
+            win32api.SendMessage(hwnd, win32con.WM_KEYDOWN, 0x59, 0)
+            sleep(0.5)
+            win32api.SendMessage(hwnd, win32con.WM_KEYUP, 0x59, 0)
             fishing_started = True
 
         disconnected = bot.is_disconnected()
