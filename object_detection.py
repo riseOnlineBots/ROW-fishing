@@ -40,6 +40,8 @@ class ObjectDetection:
 
     scheduler = None
 
+    DEBUG = False
+
     def __init__(self):
         self.current_state = State.IN_GAME
         self.lock = Lock()
@@ -48,12 +50,11 @@ class ObjectDetection:
         self.image_flag_method = cv.IMREAD_UNCHANGED
         self.match_template_method = cv.TM_CCOEFF_NORMED
 
-        self.character_bar = cv.imread('in_game.jpg', self.image_flag_method)
+        self.character_bar = cv.imread('in-game.jpg', self.image_flag_method)
         self.login = cv.imread('login.jpg', self.image_flag_method)
         self.server = cv.imread('server.jpg', self.image_flag_method)
         self.character = cv.imread('character.jpg', self.image_flag_method)
         self.loading = cv.imread('loading.jpg', self.image_flag_method)
-
 
     def detect_object(self, detected_object, threshold=0.5):
         result = cv.matchTemplate(self.screenshot, detected_object, self.match_template_method)
@@ -91,8 +92,9 @@ class ObjectDetection:
         self.attempt += 1
         # print('Current attempt:', self.attempt)
 
-        if self.attempt > 1:
-            print('The game is lagging heavily. Resetting the process...')
+        if self.attempt > 3:
+            if self.DEBUG:
+                print('The game is lagging heavily. Resetting the process...')
 
             self.current_state = State.RESET
 
@@ -110,7 +112,7 @@ class ObjectDetection:
                     self.current_state = State.LOGIN
                     self.attempt = 0
                 else:
-                    py.click(interval=2)
+                    py.click(interval=10)
 
                 self.lock.release()
             elif self.current_state == State.LOGIN:
@@ -131,9 +133,13 @@ class ObjectDetection:
             elif self.current_state == State.SERVER:
                 sleep(2)
 
-                print('Server selection...')
+                if self.DEBUG:
+                    print('Server selection...')
 
+                # Aarvad.
                 py.moveTo(975, 359)
+                # Rise Tester.
+                # py.moveTo(975, 421)
 
                 locations_character = self.detect_object(self.character)
                 self.lock.acquire()
@@ -149,13 +155,14 @@ class ObjectDetection:
             elif self.current_state == State.CHARACTER:
                 sleep(5)
 
-                # print('Character selection...')
+                if self.DEBUG:
+                    print('Character selection...')
 
-                locations_loading = self.detect_object(self.loading)
+                locations_character = self.detect_object(self.character)
                 self.lock.acquire()
 
-                if not locations_loading:
-                    # py.click(interval=5)
+                if locations_character:
+                    py.click(interval=5)
                     self.increase_attempt()
                 else:
                     self.current_state = State.LOADING
@@ -163,7 +170,8 @@ class ObjectDetection:
 
                 self.lock.release()
             elif self.current_state == State.LOADING:
-                # print('Waiting for 10 seconds to load the game.')
+                if self.DEBUG:
+                    print('Waiting for 10 seconds to load the game.')
 
                 sleep(10)
 
