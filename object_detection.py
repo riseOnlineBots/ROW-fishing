@@ -50,7 +50,7 @@ class ObjectDetection:
         self.image_flag_method = cv.IMREAD_UNCHANGED
         self.match_template_method = cv.TM_CCOEFF_NORMED
 
-        self.character_bar = cv.imread('in_game.jpg', self.image_flag_method)
+        self.character_bar = cv.imread('in-game.jpg', self.image_flag_method)
         self.login = cv.imread('login.jpg', self.image_flag_method)
         self.server = cv.imread('server.jpg', self.image_flag_method)
         self.character = cv.imread('character.jpg', self.image_flag_method)
